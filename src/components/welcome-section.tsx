@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function WelcomeSection() {
@@ -17,6 +16,11 @@ export function WelcomeSection() {
               <h3 className="font-medium text-lg mb-2">Step 1</h3>
               <p className="text-sm text-muted-foreground">
                 Enter your Gemini API key. It's stored only in your browser and never sent anywhere else.
+              </p>
+              <p className="text-sm text-blue-600 underline mt-2">
+                <a href="https://www.youtube.com/watch?v=6BRyynZkvf0" target="_blank" rel="noopener noreferrer">
+                  How to get your Gemini API key (YouTube guide)
+                </a>
               </p>
             </div>
             <div className="bg-muted rounded-lg p-4">

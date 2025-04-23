@@ -1,0 +1,175 @@
+/* Main container for login form */
+.login-form-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+
+  background-image: linear-gradient(to right, #062e06, #041a04); /* dark green gradient */
+}
+
+/* Carousel or image section */
+.login-carousel {
+  width: 50%;
+  align-self: flex-start;
+}
+
+/* Website logo for mobile */
+.login-website-logo-mobile-img {
+  width: 15px;
+  margin-top: 50px;
+  margin-bottom: 35px;
+}
+
+/* Login image */
+.login-img {
+  width: 278px;
+}
+
+/* Website logo for desktop */
+.login-website-logo-desktop-img {
+  width: 45px;
+}
+
+/* Form container for login */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  align-self: flex-start;
+  justify-content: center;
+  width: 50%;
+  
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  margin-top:95px ;
+}
+
+/* Input container */
+.input-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* Label for inputs */
+.input-label {
+  margin-bottom: 0px;
+  font-family: 'Roboto';
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 16px;
+  color: #4e9f47; /* Green */
+}
+
+/* Password container for visibility toggle */
+.password-container {
+  position: relative;
+}
+
+/* Password toggle button */
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #f9d31b; /* Yellow */
+}
+
+/* Input field for email */
+.email-input-field {
+  width: 100%;
+  padding: 10px;
+  background-color: #f9f9f9; /* Light Yellow */
+  color: #4e9f47; /* Green text */
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  border: 1px solid #f9d31b; /* Yellow border */
+}
+.Login-link{
+  color: #ff0b37;
+}
+/* Input field for password */
+.password-input-field {
+  width: 100%;
+  padding: 10px;
+  background-color: #f9f9f9; /* Light Yellow */
+  color: #4e9f47; /* Green text */
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  border: 1px solid #f9d31b; /* Yellow border */
+}
+
+/* Login button */
+.login-button {
+  padding: 10px 20px;
+  background-color: #4e9f47; /* Green */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.login-button:hover {
+  background-color: #379439; /* Darker Green on hover */
+}
+
+/* Error message styles */
+.error-message {
+  align-self: start;
+  font-size: 12px;
+  margin-top: 3px;
+  margin-bottom: 0px;
+  font-family: 'Roboto';
+  font-size: 12px;
+  line-height: 16px;
+  color: #ff0b37; /* Red for error */
+}
+
+/* Google login button */
+.google-login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9d31b; /* Yellow */
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%; /* Make the button full-width */
+  max-width: 420px; /* Optional: limit button width */
+  margin: 10px 0; /* Add spacing around the button */
+}
+
+.google-login-button:hover {
+  background-color: #e4c20a; /* Slightly darker yellow on hover */
+}
+
+.google-login-button:focus {
+  outline: none; /* Remove default focus outline */
+}
+
+.google-login-button img {
+  margin-right: 10px; /* Space between icon and text */
+  width: 20px; /* Icon width */
+  height: 20px; /* Icon height */
+  border-radius: 50%;
+}

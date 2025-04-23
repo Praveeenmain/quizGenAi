@@ -11,7 +11,7 @@ export function Navbar() {
       <div className="flex h-16 items-center px-4 container mx-auto">
         <Link to="/" className="flex items-center">
           <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Quiz Genie
+            QuizGenAi
           </h1>
         </Link>
         

@@ -14,7 +14,7 @@ const Index = () => {
       <Navbar />
       <div className="container mx-auto py-8 px-4 flex-1">
         <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          Quiz Genie
+          QuizGenAi
         </h1>
         
         <div className="space-y-8">
