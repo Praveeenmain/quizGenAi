@@ -1,5 +1,6 @@
 
 import { createContext, useContext, useState, ReactNode } from 'react';
+import { toast } from "sonner";
 
 // Define types for our context
 type Question = {
@@ -63,7 +64,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
       Text:
       ${context}`;
       
-      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
+      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,8 +89,20 @@ export function QuizProvider({ children }: { children: ReactNode }) {
 
       const data = await response.json();
       
+      if (data.error) {
+        throw new Error(data.error.message || "API error");
+      }
+      
+      if (!data.candidates || data.candidates.length === 0) {
+        throw new Error("No response from API");
+      }
+      
       // Extract the content from Gemini response
-      const generatedText = data.candidates[0].content.parts[0].text;
+      const generatedText = data.candidates[0]?.content?.parts?.[0]?.text;
+      
+      if (!generatedText) {
+        throw new Error("Empty response from API");
+      }
       
       // Find the JSON data in the response
       const jsonMatch = generatedText.match(/\[\s*\{.*\}\s*\]/s);
@@ -105,14 +118,20 @@ export function QuizProvider({ children }: { children: ReactNode }) {
             options: q.options,
             correctAnswer: q.correctAnswer,
           }));
+          
+          toast.success("Questions generated successfully!");
         } catch (error) {
           console.error("Error parsing JSON:", error);
+          toast.error("Couldn't parse the response from Gemini. Please try again.");
         }
+      } else {
+        toast.error("Couldn't extract questions from Gemini response. Please try again.");
       }
       
       setQuestions(formattedQuestions);
     } catch (error) {
       console.error('Error generating questions:', error);
+      toast.error(error instanceof Error ? error.message : "Failed to generate questions. Please check your API key and try again.");
     } finally {
       setIsLoading(false);
     }
