@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { toast } from "sonner";
 
 export function ApiKeyForm() {
   const { apiKey, setApiKey } = useQuiz();
@@ -13,7 +14,14 @@ export function ApiKeyForm() {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!tempApiKey || tempApiKey.trim() === '') {
+      toast.error("Please enter a valid API key");
+      return;
+    }
+    
     setApiKey(tempApiKey);
+    toast.success("API key saved successfully");
   };
   
   const toggleShowApiKey = () => {

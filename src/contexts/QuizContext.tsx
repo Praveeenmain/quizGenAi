@@ -64,6 +64,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
       Text:
       ${context}`;
       
+      // Updated to use the correct model name
       const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent', {
         method: 'POST',
         headers: {
@@ -87,6 +88,10 @@ export function QuizProvider({ children }: { children: ReactNode }) {
         }),
       });
 
+      if (!response.ok) {
+        throw new Error(`API returned ${response.status}: ${await response.text()}`);
+      }
+      
       const data = await response.json();
       
       if (data.error) {
