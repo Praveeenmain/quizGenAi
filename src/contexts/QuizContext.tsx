@@ -1,8 +1,6 @@
-
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { toast } from "sonner";
 
-// Define types for our context
 type Question = {
   id: string;
   question: string;
@@ -30,10 +28,32 @@ type QuizContextType = {
   answerQuestion: (questionId: string, answer: string) => void;
 };
 
+const GEMINI_API_KEY_STORAGE = 'geminiApiKey';
+const GEMINI_API_KEY_TIMESTAMP = 'geminiApiKeyTimestamp';
+const FOUR_HOURS_MS = 4 * 60 * 60 * 1000;
+
 const QuizContext = createContext<QuizContextType | undefined>(undefined);
 
 export function QuizProvider({ children }: { children: ReactNode }) {
-  const [apiKey, setApiKey] = useState<string>('');
+  const [apiKey, setApiKeyState] = useState<string>(() => {
+    try {
+      const key = localStorage.getItem(GEMINI_API_KEY_STORAGE);
+      const timestampStr = localStorage.getItem(GEMINI_API_KEY_TIMESTAMP);
+      if (!key || !timestampStr) return '';
+      const timestamp = parseInt(timestampStr, 10);
+      if (isNaN(timestamp)) return '';
+      const now = Date.now();
+      if (now - timestamp > FOUR_HOURS_MS) {
+        localStorage.removeItem(GEMINI_API_KEY_STORAGE);
+        localStorage.removeItem(GEMINI_API_KEY_TIMESTAMP);
+        return '';
+      }
+      return key;
+    } catch {
+      return '';
+    }
+  });
+
   const [context, setContext] = useState<string>('');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -47,7 +67,17 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     parseInt(localStorage.getItem('correctAnswers') || '0')
   );
 
-  // Generate questions using Gemini API
+  const setApiKey = (key: string) => {
+    setApiKeyState(key);
+    if (key && key.trim()) {
+      localStorage.setItem(GEMINI_API_KEY_STORAGE, key);
+      localStorage.setItem(GEMINI_API_KEY_TIMESTAMP, Date.now().toString());
+    } else {
+      localStorage.removeItem(GEMINI_API_KEY_STORAGE);
+      localStorage.removeItem(GEMINI_API_KEY_TIMESTAMP);
+    }
+  };
+
   const generateQuestions = async () => {
     if (!apiKey || !context) return;
     
@@ -64,7 +94,6 @@ export function QuizProvider({ children }: { children: ReactNode }) {
       Text:
       ${context}`;
       
-      // Updated to use the correct model name
       const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent', {
         method: 'POST',
         headers: {
@@ -102,20 +131,17 @@ export function QuizProvider({ children }: { children: ReactNode }) {
         throw new Error("No response from API");
       }
       
-      // Extract the content from Gemini response
       const generatedText = data.candidates[0]?.content?.parts?.[0]?.text;
       
       if (!generatedText) {
         throw new Error("Empty response from API");
       }
       
-      // Find the JSON data in the response
       const jsonMatch = generatedText.match(/\[\s*\{.*\}\s*\]/s);
       let formattedQuestions: Question[] = [];
       
       if (jsonMatch) {
         try {
-          // Parse the JSON and format questions
           const parsedQuestions = JSON.parse(jsonMatch[0]);
           formattedQuestions = parsedQuestions.map((q: any, index: number) => ({
             id: `q-${index}`,
@@ -142,16 +168,13 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Answer a question
   const answerQuestion = (questionId: string, answer: string) => {
     setQuestions((prevQuestions) => {
       return prevQuestions.map((q) => {
         if (q.id === questionId) {
-          // This is the first answer for this question
           if (!q.userAnswer) {
             const isCorrect = q.correctAnswer === answer;
             
-            // Update stats
             setTotalAnswered((prev) => {
               const newTotal = prev + 1;
               localStorage.setItem('totalAnswered', newTotal.toString());
@@ -171,7 +194,6 @@ export function QuizProvider({ children }: { children: ReactNode }) {
                 return newStreak;
               });
             } else {
-              // Reset streak on wrong answer
               setStreak(0);
               localStorage.setItem('streak', '0');
             }
