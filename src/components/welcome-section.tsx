@@ -4,7 +4,7 @@ export function WelcomeSection() {
   return (
     <Card className="w-full mb-8">
       <CardHeader>
-        <CardTitle>Welcome to Quiz Genie</CardTitle>
+        <CardTitle>Welcome to Quiz GenAi</CardTitle>
         <CardDescription>
           Generate high-quality multiple-choice questions from any text using Gemini AI
         </CardDescription>
